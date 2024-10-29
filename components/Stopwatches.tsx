@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Edit2, Pause, Play, RefreshCw, Trash2 } from "lucide-react";
+import { Download, Edit2, Pause, Play, RefreshCw, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -26,6 +26,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { Switch } from "./ui/switch";
+import { Label } from "./ui/label";
 
 interface Timer {
   id: number;
@@ -39,7 +41,7 @@ export default function Stopwatches() {
   const [newTimerName, setNewTimerName] = useState("");
   const [timers, setTimers] = useState<Timer[]>([]);
   const [timerToDelete, setTimerToDelete] = useState<number | null>(null);
-  const [singleTimerMode, setSingleTimerMode] = useState(true);
+  const [singleTimerMode, setSingleTimerMode] = useState(true); // only 1 timer can run at a time
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,6 +107,28 @@ export default function Stopwatches() {
     if (timerToDelete !== null) {
       setTimers(timers.filter((timer) => timer.id !== timerToDelete));
       setTimerToDelete(null);
+    }
+  };
+
+  const exportCSV = () => {
+    const headers = ["Timer Name", "Time (seconds)", "Time (formatted)"];
+    const csvContent = [
+      headers.join(","),
+      ...timers.map(
+        (timer) => `"${timer.name}",${timer.time},"${formatTime(timer.time)}"`
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "timer_data.csv");
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
@@ -212,7 +236,34 @@ export default function Stopwatches() {
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="Settings">Settings</TabsContent>
+        <TabsContent value="settings">
+          <Card>
+            <CardHeader>
+              <CardTitle>Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="single-timer-mode"
+                  checked={singleTimerMode}
+                  onCheckedChange={setSingleTimerMode}
+                />
+                <Label htmlFor="single-timer-mode">
+                  Only one timer can run at a time
+                </Label>
+              </div>
+              <div>
+                <Button
+                  onClick={exportCSV}
+                  className="w-full"
+                  disabled={timers.length === 0}
+                >
+                  <Download className="mr-2 h-4 w-4" /> Export Timer Data (CSV)
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </section>
   );
