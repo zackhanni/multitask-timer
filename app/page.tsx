@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Stopwatches from "@/components/Stopwatches";
+import Timers from "@/components/Timers";
 
 export default function Home() {
   return (
@@ -7,9 +8,9 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <h1 className="text-4xl font-bold dark:invert">Multitask Timer</h1>
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)] space-y-2">
-          <li>Create and name your timer.</li>
-          <li>Click on a timer to start/stop.</li>
+          <li>Name and create your timer.</li>
           <li>Only 1 timer will run at a time.</li>
+          <li>You can rename, reset or delete your timers.</li>
         </ol>
         <Stopwatches />
 
