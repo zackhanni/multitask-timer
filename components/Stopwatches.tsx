@@ -9,8 +9,23 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Edit2 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Edit2, Pause, Play, RefreshCw, Trash2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 
 interface Timer {
   id: number;
@@ -23,10 +38,22 @@ export default function Stopwatches() {
   const [activeTab, setActiveTab] = useState("timers");
   const [newTimerName, setNewTimerName] = useState("");
   const [timers, setTimers] = useState<Timer[]>([]);
+  const [timerToDelete, setTimerToDelete] = useState<number | null>(null);
+  const [singleTimerMode, setSingleTimerMode] = useState(true);
 
   const [whichTimerIsActive, setWhichTimerIsActive] = useState<number | null>(
     null
   );
+
+  const addTimer = () => {
+    if (newTimerName.trim()) {
+      setTimers([
+        ...timers,
+        { id: Date.now(), name: newTimerName, time: 0, isRunning: false },
+      ]);
+      setNewTimerName("");
+    }
+  };
 
   const renameTimer = (id: number, newName: string) => {
     setTimers(
@@ -43,6 +70,35 @@ export default function Stopwatches() {
     return `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
       .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
+
+  const toggleTimer = (id: number) => {
+    setTimers(
+      timers.map((timer) => {
+        if (timer.id === id) {
+          return { ...timer, isRunning: !timer.isRunning };
+        }
+        if (singleTimerMode && !timer.isRunning) {
+          return timer;
+        }
+        return { ...timer, isRunning: false };
+      })
+    );
+  };
+
+  const resetTimer = (id: number) => {
+    setTimers(
+      timers.map((timer) =>
+        timer.id === id ? { ...timer, time: 0, isRunning: false } : timer
+      )
+    );
+  };
+
+  const deleteTimer = () => {
+    if (timerToDelete !== null) {
+      setTimers(timers.filter((timer) => timer.id !== timerToDelete));
+      setTimerToDelete(null);
+    }
   };
 
   const handleDeleteTimer = (index: number) => {
@@ -69,7 +125,7 @@ export default function Stopwatches() {
               onChange={(e) => setNewTimerName(e.target.value)}
               className="mr-2"
             />
-            <Button>Add Timer</Button>
+            <Button onClick={addTimer}>Add Timer</Button>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -102,11 +158,62 @@ export default function Stopwatches() {
                     {formatTime(timer.time)}
                   </div>
                 </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => toggleTimer(timer.id)}
+                  >
+                    {timer.isRunning ? (
+                      <Pause className="h-4 w-4" />
+                    ) : (
+                      <Play className="h-4 w-4" />
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => resetTimer(timer.id)}
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setTimerToDelete(timer.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Confirm Deletion</DialogTitle>
+                        <DialogDescription>
+                          Are you sure you want to delete the timer "
+                          {timer.name}"? This action cannot be undone.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <Button
+                          variant="outline"
+                          onClick={() => setTimerToDelete(null)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button variant="destructive" onClick={deleteTimer}>
+                          Delete
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </CardFooter>
               </Card>
             ))}
           </div>
 
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             {timers.map((stopwatch, index) => {
               return (
                 <TimerButton
@@ -170,7 +277,7 @@ export default function Stopwatches() {
                 </PopoverContent>
               </Popover>
             </div>
-          </div>
+          </div> */}
         </TabsContent>
         <TabsContent value="Settings">Settings</TabsContent>
       </Tabs>
