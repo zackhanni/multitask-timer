@@ -41,9 +41,16 @@ export default function Stopwatches() {
   const [timerToDelete, setTimerToDelete] = useState<number | null>(null);
   const [singleTimerMode, setSingleTimerMode] = useState(true);
 
-  const [whichTimerIsActive, setWhichTimerIsActive] = useState<number | null>(
-    null
-  );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimers((prevTimers) =>
+        prevTimers.map((timer) =>
+          timer.isRunning ? { ...timer, time: timer.time + 1 } : timer
+        )
+      );
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const addTimer = () => {
     if (newTimerName.trim()) {
@@ -99,14 +106,6 @@ export default function Stopwatches() {
       setTimers(timers.filter((timer) => timer.id !== timerToDelete));
       setTimerToDelete(null);
     }
-  };
-
-  const handleDeleteTimer = (index: number) => {
-    setTimers((prevTimers) => {
-      const newTimers = [...prevTimers];
-      newTimers.splice(index, 1);
-      return newTimers;
-    });
   };
 
   return (
@@ -212,72 +211,6 @@ export default function Stopwatches() {
               </Card>
             ))}
           </div>
-
-          {/* <div className="flex space-x-4">
-            {timers.map((stopwatch, index) => {
-              return (
-                <TimerButton
-                  key={stopwatch.name + index}
-                  name={stopwatch.name}
-                  timerActive={whichTimerIsActive == index}
-                  onClick={() =>
-                    whichTimerIsActive == index
-                      ? setWhichTimerIsActive(null)
-                      : setWhichTimerIsActive(index)
-                  }
-                  onDelete={() => handleDeleteTimer(index)}
-                />
-              );
-            })}
-            {timers.length > 0 && (
-              <button
-                className={`bg-red-100 p-8 border-4 dark:text-black ${
-                  whichTimerIsActive == null ? "border-red-500" : ""
-                }`}
-                onClick={() => setWhichTimerIsActive(null)}
-              >
-                Pause
-              </button>
-            )}
-            <div className="bg-green-100 p-8 border-4 dark:text-black flex">
-              <Popover>
-                <PopoverTrigger>New Timer</PopoverTrigger>
-                <PopoverContent>
-                  <div className="space-y-4">
-                    <p>Create a new timer</p>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        setTimers((prev) => [
-                          ...prev,
-                          { name: newTimerName, time: 0 },
-                        ]);
-                      }}
-                      className="flex"
-                    >
-                      <div className="flex justify-between w-full gap-2">
-                        <input
-                          type="text"
-                          name="newTimer"
-                          id="newTimer"
-                          defaultValue={""}
-                          className="p-3 w-full"
-                          onChange={(e) => setNewTimerName(e.target.value)}
-                        ></input>
-
-                        <button
-                          className="text-sm bg-blue-400 p-2"
-                          type="submit"
-                        >
-                          create
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div> */}
         </TabsContent>
         <TabsContent value="Settings">Settings</TabsContent>
       </Tabs>
