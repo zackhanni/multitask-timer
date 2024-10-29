@@ -9,22 +9,41 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Edit2 } from "lucide-react";
 
-type Timer = { name: string; time: number };
+interface Timer {
+  id: number;
+  name: string;
+  time: number;
+  isRunning: boolean;
+}
 
 export default function Stopwatches() {
   const [activeTab, setActiveTab] = useState("timers");
   const [newTimerName, setNewTimerName] = useState("");
+  const [timers, setTimers] = useState<Timer[]>([]);
 
   const [whichTimerIsActive, setWhichTimerIsActive] = useState<number | null>(
     null
   );
 
-  const [timers, setTimers] = useState<Timer[]>([
-    // { name: "Task 1", time: 0 },
-    // { name: "Task 2", time: 0 },
-    // { name: "Task 3", time: 0 },
-  ]);
+  const renameTimer = (id: number, newName: string) => {
+    setTimers(
+      timers.map((timer) =>
+        timer.id === id ? { ...timer, name: newName } : timer
+      )
+    );
+  };
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
 
   const handleDeleteTimer = (index: number) => {
     setTimers((prevTimers) => {
@@ -52,6 +71,41 @@ export default function Stopwatches() {
             />
             <Button>Add Timer</Button>
           </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {timers.map((timer) => (
+              <Card
+                key={timer.id}
+                className={`transition-colors ${
+                  timer.isRunning
+                    ? "bg-green-100 border-green-500 border-2"
+                    : ""
+                }`}
+              >
+                <CardHeader>
+                  <CardTitle className="flex justify-between items-center">
+                    <span>{timer.name}</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        const newName = prompt("Enter new name", timer.name);
+                        if (newName) renameTimer(timer.id, newName);
+                      }}
+                    >
+                      <Edit2 className="h-4 w-4" />
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-4xl font-bold text-center mb-4">
+                    {formatTime(timer.time)}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
           <div className="flex space-x-4">
             {timers.map((stopwatch, index) => {
               return (
