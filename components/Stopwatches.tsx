@@ -6,17 +6,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 type Timer = { name: string; time: number };
 
 export default function Stopwatches() {
   const [activeTab, setActiveTab] = useState("timers");
+  const [newTimerName, setNewTimerName] = useState("");
 
   const [whichTimerIsActive, setWhichTimerIsActive] = useState<number | null>(
     null
   );
-  const [newTimerName, setNewTimerName] = useState("");
 
   const [timers, setTimers] = useState<Timer[]>([
     // { name: "Task 1", time: 0 },
@@ -39,68 +41,84 @@ export default function Stopwatches() {
           <TabsTrigger value="timers">Timers</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
-        <div className="flex space-x-4">
-          {timers.map((stopwatch, index) => {
-            return (
-              <TimerButton
-                key={stopwatch.name + index}
-                name={stopwatch.name}
-                timerActive={whichTimerIsActive == index}
-                onClick={() =>
-                  whichTimerIsActive == index
-                    ? setWhichTimerIsActive(null)
-                    : setWhichTimerIsActive(index)
-                }
-                onDelete={() => handleDeleteTimer(index)}
-              />
-            );
-          })}
-          {timers.length > 0 && (
-            <button
-              className={`bg-red-100 p-8 border-4 dark:text-black ${
-                whichTimerIsActive == null ? "border-red-500" : ""
-              }`}
-              onClick={() => setWhichTimerIsActive(null)}
-            >
-              Pause
-            </button>
-          )}
-          <div className="bg-green-100 p-8 border-4 dark:text-black flex">
-            <Popover>
-              <PopoverTrigger>New Timer</PopoverTrigger>
-              <PopoverContent>
-                <div className="space-y-4">
-                  <p>Create a new timer</p>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      setTimers((prev) => [
-                        ...prev,
-                        { name: newTimerName, time: 0 },
-                      ]);
-                    }}
-                    className="flex"
-                  >
-                    <div className="flex justify-between w-full gap-2">
-                      <input
-                        type="text"
-                        name="newTimer"
-                        id="newTimer"
-                        defaultValue={""}
-                        className="p-3 w-full"
-                        onChange={(e) => setNewTimerName(e.target.value)}
-                      ></input>
-
-                      <button className="text-sm bg-blue-400 p-2" type="submit">
-                        create
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </PopoverContent>
-            </Popover>
+        <TabsContent value="timers">
+          <div className="flex mb-4">
+            <Input
+              type="input"
+              placeholder="Timer name"
+              value={newTimerName}
+              onChange={(e) => setNewTimerName(e.target.value)}
+              className="mr-2"
+            />
+            <Button>Add Timer</Button>
           </div>
-        </div>
+          <div className="flex space-x-4">
+            {timers.map((stopwatch, index) => {
+              return (
+                <TimerButton
+                  key={stopwatch.name + index}
+                  name={stopwatch.name}
+                  timerActive={whichTimerIsActive == index}
+                  onClick={() =>
+                    whichTimerIsActive == index
+                      ? setWhichTimerIsActive(null)
+                      : setWhichTimerIsActive(index)
+                  }
+                  onDelete={() => handleDeleteTimer(index)}
+                />
+              );
+            })}
+            {timers.length > 0 && (
+              <button
+                className={`bg-red-100 p-8 border-4 dark:text-black ${
+                  whichTimerIsActive == null ? "border-red-500" : ""
+                }`}
+                onClick={() => setWhichTimerIsActive(null)}
+              >
+                Pause
+              </button>
+            )}
+            <div className="bg-green-100 p-8 border-4 dark:text-black flex">
+              <Popover>
+                <PopoverTrigger>New Timer</PopoverTrigger>
+                <PopoverContent>
+                  <div className="space-y-4">
+                    <p>Create a new timer</p>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        setTimers((prev) => [
+                          ...prev,
+                          { name: newTimerName, time: 0 },
+                        ]);
+                      }}
+                      className="flex"
+                    >
+                      <div className="flex justify-between w-full gap-2">
+                        <input
+                          type="text"
+                          name="newTimer"
+                          id="newTimer"
+                          defaultValue={""}
+                          className="p-3 w-full"
+                          onChange={(e) => setNewTimerName(e.target.value)}
+                        ></input>
+
+                        <button
+                          className="text-sm bg-blue-400 p-2"
+                          type="submit"
+                        >
+                          create
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+        </TabsContent>
+        <TabsContent value="Settings">Settings</TabsContent>
       </Tabs>
     </section>
   );
