@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer";
 import Stopwatches from "@/components/Stopwatches";
-import Image from "next/image";
 
 export default function Home() {
   return (
