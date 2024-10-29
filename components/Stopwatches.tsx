@@ -8,7 +8,9 @@ import {
 } from "@/components/ui/popover";
 
 export default function Stopwatches() {
-  const [whichTimerIsActive, setWhichTimerIsActive] = useState(null);
+  const [whichTimerIsActive, setWhichTimerIsActive] = useState<number | null>(
+    null
+  );
   const [newTimerName, setNewTimerName] = useState("");
 
   type Timer = { name: string; time: number };
@@ -18,10 +20,12 @@ export default function Stopwatches() {
     // { name: "Task 3", time: 0 },
   ]);
 
-  const handleDeleteTimer = (name: string) => {
-    setTimers((prevTimers) =>
-      prevTimers.filter((timer) => timer.name !== name)
-    );
+  const handleDeleteTimer = (index: number) => {
+    setTimers((prevTimers) => {
+      const newTimers = [...prevTimers];
+      newTimers.splice(index, 1);
+      return newTimers;
+    });
   };
 
   return (
@@ -38,18 +42,20 @@ export default function Stopwatches() {
                   ? setWhichTimerIsActive(null)
                   : setWhichTimerIsActive(index)
               }
-              onDelete={() => handleDeleteTimer(stopwatch.name)}
+              onDelete={() => handleDeleteTimer(index)}
             />
           );
         })}
-        <button
-          className={`bg-red-100 p-8 border-4 dark:text-black ${
-            whichTimerIsActive == null ? "border-red-500" : ""
-          }`}
-          onClick={() => setWhichTimerIsActive(null)}
-        >
-          Stop All
-        </button>
+        {timers.length > 0 && (
+          <button
+            className={`bg-red-100 p-8 border-4 dark:text-black ${
+              whichTimerIsActive == null ? "border-red-500" : ""
+            }`}
+            onClick={() => setWhichTimerIsActive(null)}
+          >
+            Pause
+          </button>
+        )}
         <div className="bg-green-100 p-8 border-4 dark:text-black flex">
           <Popover>
             <PopoverTrigger>New Timer</PopoverTrigger>
@@ -112,9 +118,9 @@ function TimerButton({
     }
   }, [time, timerActive]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newName = e.target.timerName.value;
+    const newName = e.currentTarget.timerName.value;
     setTimerName(newName);
   };
 
