@@ -2,9 +2,13 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+// I added this below to fix compile errors. remove when shadcn catches up to next15
+type CustomInputProps = React.InputHTMLAttributes<HTMLInputElement>;
+export interface InputProps extends CustomInputProps {
+  className?: string;
+}
+// export interface InputProps
+//   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
