@@ -128,11 +128,15 @@ export default function Stopwatches() {
   };
 
   return (
-    <section className="container mx-auto">
+    <section className="container">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="timers">Timers</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 h-12">
+          <TabsTrigger value="timers" className="h-10">
+            Timers
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="h-10">
+            Settings
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="timers">
           <div className="flex mb-4">
@@ -141,19 +145,20 @@ export default function Stopwatches() {
               placeholder="Timer name"
               value={newTimerName}
               onChange={(e) => setNewTimerName(e.target.value)}
-              className="mr-2"
+              onKeyDown={(e) => e.key === "Enter" && addTimer()}
+              className="mr-2 text-base h-12"
             />
-            <Button onClick={addTimer}>Add Timer</Button>
+            <Button onClick={addTimer} className="h-12 text-base">
+              Add Timer
+            </Button>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             {timers.map((timer) => (
               <Card
                 key={timer.id}
-                className={`transition-colors ${
-                  timer.isRunning
-                    ? "bg-green-100 border-green-500 border-2"
-                    : ""
+                className={`transition-colors border-4 ${
+                  timer.isRunning ? "bg-green-100 border-green-500" : ""
                 }`}
               >
                 <CardHeader>
