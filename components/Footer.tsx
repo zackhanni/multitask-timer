@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+    <footer className="container py-10 flex gap-6 flex-wrap items-center justify-center">
       <a className="flex items-center gap-2">
         {/* <Image
           aria-hidden
