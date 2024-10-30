@@ -148,7 +148,10 @@ export default function Stopwatches() {
               onKeyDown={(e) => e.key === "Enter" && addTimer()}
               className="mr-2 text-base h-12"
             />
-            <Button onClick={addTimer} className="h-12 text-base">
+            <Button
+              onClick={addTimer}
+              className="h-12 text-base bg-accent hover:bg-accent-foreground hover:text-black"
+            >
               Add Timer
             </Button>
           </div>
@@ -262,7 +265,7 @@ export default function Stopwatches() {
               <div>
                 <Button
                   onClick={exportCSV}
-                  className="w-full"
+                  className="w-full disabled:bg-gray-400 bg-accent hover:bg-accent-foreground hover:text-black"
                   disabled={timers.length === 0}
                 >
                   <Download className="mr-2 h-4 w-4" /> Export Timer Data (CSV)
