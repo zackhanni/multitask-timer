@@ -187,8 +187,8 @@ export default function Stopwatches() {
                     size="icon"
                     className={`${
                       timer.isRunning
-                        ? "hover:bg-yellow-100 hover:border-yellow-500"
-                        : "hover:bg-green-100 hover:border-green-500"
+                        ? "hover:bg-gray-100 hover:text-black hover:border-yellow-500"
+                        : "hover:bg-gray-100 hover:text-black hover:border-green-500"
                     }`}
                     onClick={() => toggleTimer(timer.id)}
                   >
@@ -201,7 +201,7 @@ export default function Stopwatches() {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="hover:bg-blue-100 hover:border-blue-500"
+                    className="hover:bg-gray-100 hover:text-black hover:border-blue-500"
                     onClick={() => resetTimer(timer.id)}
                   >
                     <RefreshCw className="h-4 w-4" />
@@ -211,7 +211,7 @@ export default function Stopwatches() {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="hover:bg-red-100 hover:border-red-500"
+                        className="hover:bg-gray-100 hover:text-black hover:border-red-500"
                         onClick={() => setTimerToDelete(timer.id)}
                       >
                         <Trash2 className="h-4 w-4" />
