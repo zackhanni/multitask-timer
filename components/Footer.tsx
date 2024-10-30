@@ -15,7 +15,7 @@ export default function Footer() {
         Created by Zack Hanni
       </a>
       <a
-        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+        className="flex items-center gap-2 scale-underlined"
         href="https://www.zachary.works/"
         target="_blank"
         rel="noopener noreferrer"
@@ -30,7 +30,7 @@ export default function Footer() {
         Personal Portfolio
       </a>
       <a
-        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+        className="flex items-center gap-2 scale-underlined"
         href="https://www.webwizarddev.com/"
         target="_blank"
         rel="noopener noreferrer"
