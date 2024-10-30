@@ -1,11 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -214,8 +209,8 @@ export default function Stopwatches() {
                       <DialogHeader>
                         <DialogTitle>Confirm Deletion</DialogTitle>
                         <DialogDescription>
-                          Are you sure you want to delete the timer "
-                          {timer.name}"? This action cannot be undone.
+                          Are you sure you want to delete the timer &quot;
+                          {timer.name}&quot;? This action cannot be undone.
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>
