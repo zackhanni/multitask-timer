@@ -131,10 +131,10 @@ export default function Stopwatches() {
     <section className="container">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="">
         <TabsList className="grid w-full grid-cols-2 h-12">
-          <TabsTrigger value="timers" className="h-10">
+          <TabsTrigger value="timers" className="h-10 text-base">
             Timers
           </TabsTrigger>
-          <TabsTrigger value="settings" className="h-10">
+          <TabsTrigger value="settings" className="h-10 text-base">
             Settings
           </TabsTrigger>
         </TabsList>
