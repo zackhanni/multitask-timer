@@ -134,7 +134,7 @@ export default function Stopwatches() {
           <TabsTrigger value="timers" className="h-10 text-base">
             Timers
           </TabsTrigger>
-          <TabsTrigger value="settings" className="h-10 text-base">
+          <TabsTrigger value="settings" className="h-10 text-base text-black">
             Settings
           </TabsTrigger>
         </TabsList>
