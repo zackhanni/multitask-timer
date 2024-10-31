@@ -36,7 +36,7 @@ A simple, open-source Next.js app that allows users to set, manage, and export m
 
    - **Desktop** (Electron): Run with Electron to package as a desktop app.
 
-````bash
+   ```bash
    npm run make
    ```
 
@@ -61,4 +61,7 @@ Pull requests are welcome! For major changes, please open an issue to discuss th
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
-````
+
+```
+
+```
