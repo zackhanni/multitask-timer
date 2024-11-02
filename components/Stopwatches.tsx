@@ -21,8 +21,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
 import Image from "next/image";
 
 interface Timer {
