@@ -35,7 +35,6 @@ export default function Stopwatches() {
   const [newTimerName, setNewTimerName] = useState("");
   const [timers, setTimers] = useState<Timer[]>([]);
   const [timerToDelete, setTimerToDelete] = useState<number | null>(null);
-  const [singleTimerMode, setSingleTimerMode] = useState(true); // only 1 timer can run at a time
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,7 +80,7 @@ export default function Stopwatches() {
         if (timer.id === id) {
           return { ...timer, isRunning: !timer.isRunning };
         }
-        if (singleTimerMode && !timer.isRunning) {
+        if (!timer.isRunning) {
           return timer;
         }
         return { ...timer, isRunning: false };
@@ -262,16 +261,6 @@ export default function Stopwatches() {
                 </Button>
               </div>
               <hr />
-              {/* <div className="flex items-center space-x-2">
-                <Switch
-                  id="single-timer-mode"
-                  checked={singleTimerMode}
-                  onCheckedChange={setSingleTimerMode}
-                />
-                <Label htmlFor="single-timer-mode">
-                  Only one timer can run at a time
-                </Label>
-              </div> */}
               <p>Download standalone application</p>
               <div className="grid grid-cols-2 gap-4">
                 <Button
