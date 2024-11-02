@@ -23,6 +23,7 @@ import {
 } from "./ui/dialog";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
+import Image from "next/image";
 
 interface Timer {
   id: number;
@@ -134,8 +135,8 @@ export default function Stopwatches() {
           <TabsTrigger value="timers" className="h-10 text-base">
             Timers
           </TabsTrigger>
-          <TabsTrigger value="settings" className="h-10 text-base text-black">
-            Settings
+          <TabsTrigger value="downloads" className="h-10 text-base text-black">
+            Downloads
           </TabsTrigger>
         </TabsList>
         <TabsContent value="timers">
@@ -246,13 +247,24 @@ export default function Stopwatches() {
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="settings">
+        <TabsContent value="downloads">
           <Card>
             <CardHeader>
-              <CardTitle>Settings</CardTitle>
+              <CardTitle>Downloads</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center space-x-2">
+              <p>Export in a spreadsheet format</p>
+              <div>
+                <Button
+                  onClick={exportCSV}
+                  className="w-full disabled:bg-gray-400 bg-accent hover:bg-accent-foreground hover:text-black"
+                  disabled={timers.length === 0}
+                >
+                  <Download className="mr-2 h-4 w-4" /> Export Timer Data (CSV)
+                </Button>
+              </div>
+              <hr />
+              {/* <div className="flex items-center space-x-2">
                 <Switch
                   id="single-timer-mode"
                   checked={singleTimerMode}
@@ -261,14 +273,32 @@ export default function Stopwatches() {
                 <Label htmlFor="single-timer-mode">
                   Only one timer can run at a time
                 </Label>
-              </div>
-              <div>
+              </div> */}
+              <p>Download standalone application</p>
+              <div className="grid grid-cols-2 gap-4">
                 <Button
                   onClick={exportCSV}
-                  className="w-full disabled:bg-gray-400 bg-accent hover:bg-accent-foreground hover:text-black"
-                  disabled={timers.length === 0}
+                  className=" bg-accent hover:bg-accent-foreground hover:text-black flex-col h-24"
                 >
-                  <Download className="mr-2 h-4 w-4" /> Export Timer Data (CSV)
+                  <Image
+                    src={"/mac.svg"}
+                    alt="apple logo"
+                    width={40}
+                    height={40}
+                  />
+                  Mac
+                </Button>
+                <Button
+                  onClick={exportCSV}
+                  className=" bg-accent hover:bg-accent-foreground hover:text-black flex-col h-24"
+                >
+                  <Image
+                    src={"/windows.svg"}
+                    alt="windows logo"
+                    width={40}
+                    height={40}
+                  />
+                  PC
                 </Button>
               </div>
             </CardContent>
